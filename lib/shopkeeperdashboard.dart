@@ -207,6 +207,26 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
+            SizedBox(height: 30),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              height: 45,
+              child: Material(
+                color: Colors.yellow[200],
+                child: Center(
+                  child: Text(
+                    'Product List',
+                    style: TextStyle(
+                      fontSize: 23,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 30),
             Container(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               height: 45,
@@ -227,15 +247,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
 
             SizedBox(height: 30),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-
-
-            SizedBox(height: 30),
-
-
-                ]),
+            //here we can add our code
 
           ]),
 
