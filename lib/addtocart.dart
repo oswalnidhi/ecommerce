@@ -30,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   postTest() async {
 print(widget.user);
-    var url = Uri.parse('http://192.168.137.20:8081/item');
+    var url = Uri.parse('http://192.168.0.105:8081/item');
     var response =
     await http.post(url, body: {"user":widget.user});
     print(response.body);
@@ -77,21 +77,7 @@ class _advertiseState extends State<advertise> {
 
   }
 
-  // getTotalAmount() {
-  //   var count = 0;
-  //
-  //   for (int i = 0; i < picked.length; i++) {
-  //     if (picked[i]) {
-  //       count = count + 1;
-  //     }
-  //     if (i == picked.length - 1) {
-  //       setState(() {
-  //         totalAmount = $names[0][cost]* count;
-  //       });
-  //     }
-  //   }
-  // }
-  //
+
 Widget _builditem (){
     return   (names.length>0) ?ListView.builder(
         shrinkWrap: true,
@@ -106,8 +92,6 @@ Widget _builditem (){
                 sel.add(false);
                 checkSelection[index]=!checkSelection[index];
                 total= int.parse(names[index]['cost'])+total;
-                print(names[index]['cost']);
-                //names[index]['selected']=!names[index]['selected'];
 
               });},
             title: Card(
@@ -117,7 +101,7 @@ Widget _builditem (){
                 children: [
 
                   Image(
-                    image: NetworkImage("http://192.168.137.20:8081/getImage"),
+                    image: NetworkImage("http://192.168.0.105:8081/getImage"),
                     alignment: Alignment.centerLeft,
                     width:130,
                     height:150,
@@ -136,7 +120,9 @@ Widget _builditem (){
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      IconButton(onPressed:(){}, icon: Icon(Icons.close, color:Colors.grey, ),
+                      IconButton(onPressed:(){
+                        setState(() => names.removeAt(index));
+                      }, icon: Icon(Icons.close, color:Colors.grey, ),
                         alignment: Alignment.center,    ),
                     ],
                   ),
