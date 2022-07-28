@@ -5,6 +5,8 @@ import 'package:flutter_app1/demo.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
 import 'package:flutter_app1/product1.dart';
 import 'package:flutter_app1/login.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(dashboard());
@@ -40,11 +42,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //final textController = new TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
-  //var k= widget.user;
   @override
+  post()async{
+    var url = Uri.parse('http://192.168.137.154:8080/product_list');
+    var response =
+    await http.post(url, body: {"user":widget.user});
+
+    print(response.body);
+    Navigator.push(
+      context, MaterialPageRoute(builder: (context) => productlist(l:response.body)),
+    );
+
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -211,40 +221,41 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               height: 45,
-              child: Material(
-                color: Colors.yellow[200],
+              child: ElevatedButton(onPressed:(){
+                post();
+                },
                 child: Center(
                   child: Text(
-                    'Product List',
-                    style: TextStyle(
-                      fontSize: 23,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
-                    ),
+                    'Product List', style: TextStyle(
+                    fontSize: 23,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5,
+                  ),
                   ),
                 ),
-              ),
+              )
+
             ),
             SizedBox(height: 30),
             Container(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               height: 45,
-              child: Material(
-                color: Colors.yellow[200],
+              child: ElevatedButton(onPressed: (){},
                 child: Center(
                   child: Text(
                     'Order List',
                     style: TextStyle(
                       fontSize: 23,
-                      color: Colors.black,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.5,
                     ),
                   ),
                 ),
-              ),
-            ),
+              ),),
+             
+
 
             SizedBox(height: 30),
             //here we can add our code
@@ -252,6 +263,66 @@ class _MyHomePageState extends State<MyHomePage> {
           ]),
 
 
+    );
+  }
+}
+class productlist extends StatefulWidget {
+  final  String l;
+  const productlist({Key key ,this.l}) : super(key: key);
+
+  @override
+  State<productlist> createState() => _productlistState();
+}
+
+class _productlistState extends State<productlist> {
+
+  get names => json.decode(widget.l) as List;
+
+
+  @override
+  Widget build(BuildContext context) {
+    List<TableRow> product = [TableRow(
+        decoration: BoxDecoration(color: Colors.white),
+        children: [
+          Text('Product', textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 30)),
+          Text('catagory', textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 30)),
+        ]),];
+    for(int i = 0;i<names.length;i++)
+      {
+        product.add(
+          TableRow(
+              decoration: BoxDecoration(color: Colors.white),
+              children: [
+                Text('${names[i]['nameoftheproduct']}', textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 20)),
+                Text('${names[i]['catagory']}', textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 20)),
+              ]),
+);
+      }
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title:Text("Product List"),
+      ),
+      body:GestureDetector(
+        onTap: (){
+          print(product);
+        },
+        child: (names.length>0)?Table(
+          border: TableBorder.all(color: Colors.black),
+
+    children: product,
+        ) : Center(
+          child: Text("No products are added",style:TextStyle(color: Colors.red,)),
+        ),
+      )
     );
   }
 }
