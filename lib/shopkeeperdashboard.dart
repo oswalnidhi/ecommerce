@@ -275,54 +275,135 @@ class productlist extends StatefulWidget {
 }
 
 class _productlistState extends State<productlist> {
-
   get names => json.decode(widget.l) as List;
-
-
   @override
   Widget build(BuildContext context) {
-    List<TableRow> product = [TableRow(
-        decoration: BoxDecoration(color: Colors.white),
-        children: [
-          Text('Product', textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 30)),
-          Text('catagory', textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 30)),
-        ]),];
-    for(int i = 0;i<names.length;i++)
-      {
-        product.add(
-          TableRow(
-              decoration: BoxDecoration(color: Colors.white),
-              children: [
-                Text('${names[i]['nameoftheproduct']}', textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20)),
-                Text('${names[i]['catagory']}', textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20)),
-              ]),
-);
-      }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title:Text("Product List"),
       ),
-      body:GestureDetector(
-        onTap: (){
-          print(product);
-        },
-        child: (names.length>0)?Table(
-          border: TableBorder.all(color: Colors.black),
+      body:ListView.builder(
+// scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: names.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              onTap: () {
+                int j =index;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => prod(n:widget.l ,i:index)),
+                );
+              },
+              title:  Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(height: 3.0),
+                    Container(
+                      height: 50,
+                      margin: EdgeInsets.all(2),
+                      color: Colors.teal[50],
+                      child: Center(
+                          child: Text(
+                            '${names[index]['nameoftheproduct']}',
+                            style: TextStyle(
+                                fontSize: 33,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          )),
+                    ),
+                  ],
+                ),
+              ),
 
-    children: product,
-        ) : Center(
-          child: Text("No products are added",style:TextStyle(color: Colors.red,)),
-        ),
-      )
+            );
+
+
+          }),
+    );
+  }
+}
+
+
+class prod extends StatefulWidget {
+  final  n,i;
+  const prod({Key key,this.n,this.i}) : super(key: key);
+
+  @override
+  State<prod> createState() => _prodState();
+}
+
+class _prodState extends State<prod> {
+  get product => json.decode(widget.n) as List;
+
+
+  @override
+  Widget build(BuildContext context) {
+    var index = widget.i;
+    return Scaffold(
+      appBar: AppBar(
+        title:Text("Product info"),
+      ),
+body:  ListTile(
+    title: Padding(
+          padding: const EdgeInsets.all(10.0),
+      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+
+      Image(
+      image: NetworkImage("http://192.168.137.154:8080/getImage"),
+      fit: BoxFit.fill,
+      ),
+
+      SizedBox(height: 6.0),
+      Text(
+      "NAME:${product[index]["nameoftheproduct"]}",
+      style: TextStyle(
+      fontSize: 20.0,
+
+      color: Colors.grey[800],
+      ),
+      ),
+      SizedBox(height: 6.0),
+      Text(
+      "DESCRIPTION :${product[index]["description"]}",
+      style: TextStyle(
+      fontSize: 20.0,
+      color: Colors.grey[800],
+      ),
+      ),
+      SizedBox(height: 6.0),
+      Text(
+      "SPECIFICATION:${product[index]["specification"]}",
+      style: TextStyle(
+      fontSize: 20.0,
+      color: Colors.grey[800],
+      ),
+      ),
+      SizedBox(height: 6.0),
+      Text(
+      "COST:${product[index]["cost"]}",
+      style: TextStyle(
+      fontSize: 20.0,
+      color: Colors.grey[800],
+      ),
+      ),
+      SizedBox(height: 6.0),
+      Text(
+      "DELIVERY COST:${product[index]["delivarycost"]}",
+      style: TextStyle(
+      fontSize: 20.0,
+      color: Colors.grey[800],
+      ),
+      ),
+      ],
+      ),
+      ),
+  ),
     );
   }
 }
