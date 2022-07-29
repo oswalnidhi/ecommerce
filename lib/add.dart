@@ -47,7 +47,7 @@ class _adState extends State<ad> {
   postTest() async {
 
     String info;
-    var url = Uri.parse('http://192.168.137.20:8081/ad');
+    var url = Uri.parse('http://192.168.137.154:8080/ad');
     var response = await http.post(url,body: { "shoplicence":widget.shop});
     var respStr = "";
     if (response.statusCode == 200) {
@@ -90,7 +90,7 @@ class _advertiseState extends State<advertise> {
 
     List<List> names = <List>[];
 
-    var url = Uri.parse('http://192.168.137.20:8081/ad2');
+    var url = Uri.parse('http://192.168.137.154:8080/ad2');
     var response = await http.post(url, body: {"cat": cat,"shoplicence":widget.shop});
     // print(response.body);
     if (response.statusCode == 200) {
@@ -206,7 +206,7 @@ class _add3State extends State<add3> {
     children: <Widget>[
 
     Image(
-    image: NetworkImage("http://192.168.137.20:8081/getImage"),
+    image: NetworkImage("http://192.168.137.154:8080/getImage"),
     fit: BoxFit.fill,
     ),
 
@@ -289,7 +289,7 @@ class _add4State extends State<add4> {
           children: <Widget>[
 
             Image(
-              image: NetworkImage("http://192.168.137.20:8081/getImage"),
+              image: NetworkImage("http://192.168.137.154:8080/getImage"),
               fit: BoxFit.fill,
             ),
 
@@ -373,7 +373,7 @@ class _add4State extends State<add4> {
     String user = widget.user;
 
 
-    var url = Uri.parse('http://192.168.137.20:8081/cart');
+    var url = Uri.parse('http://192.168.137.154:8080/cart');
     var response =
     await http.post(url, body: {"name":names[0]['nameoftheproduct'],"cost":names[0]['cost'],"user":user});
      print(response.body);
